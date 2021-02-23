@@ -1,0 +1,78 @@
+---
+# - name: Search update
+#   yum:
+#     name: "*"
+#     state: latest
+
+# - name: Install docker
+#   shell: "amazon-linux-extras install docker -y"
+#   become: yes
+
+# - name: Ensure docker deamon is running
+#   service:
+#     name: docker
+#     state: started
+#   become: true
+
+# - name: Add remote "ec2-user" user to "docker" group
+#   user:
+#     name: ec2-user
+#     group: docker
+#     append: yes
+
+# - name: Ensure docker deamon is restarted
+#   service:
+#     name: docker
+#     state: restarted
+#   become: true
+
+# - name: Install docker-compose
+#   get_url:
+#     url: "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64"
+#     dest: /usr/local/bin/docker-compose
+#     owner: root
+#     mode: 0755
+- name: install pip
+  yum:
+    name: python-pip
+- name: install docker-compose stuff with pip
+  pip:
+    name: "{{ item }}"
+  with_items:
+    - pyyaml
+    - docker
+    # - docker-py
+    - docker-compose
+- name: get docker-compose
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-Linux-x86_64"
+    dest: /usr/local/bin/docker-compose
+    owner: root
+    mode: 0755
+# ---
+# - name: Check if Swarm has already been Initialized
+#   shell: docker node ls
+#   register: swarm_status
+#   ignore_errors: true
+#   tags: swarm
+
+# - name: Initialize Docker Swarm
+#   docker_swarm:
+#     state: present
+#   register: swarm_create
+#   # shell: >
+#   #   docker swarm init
+#   #   --advertise-addr={{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:2377
+#   when: swarm_status.rc != 0
+#   run_once: true
+#   tags: swarm
+
+# - name: Get the Manager join-token
+#   shell: docker swarm join-token --quiet manager
+#   register: manager_token
+#   tags: swarm
+
+# - name: Get the worker join-token
+#   shell: docker swarm join-token --quiet worker
+#   register: worker_token
+#   tags: swarm

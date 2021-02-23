@@ -1,0 +1,13 @@
+server {
+   listen 443;
+   location / {
+      proxy_pass http://backend;
+   }
+}
+upstream backend {
+   server 34.217.68.232:80;
+   server 34.222.140.146:80;
+
+#   server {{ manager_public_ip }}:80;
+#   server {{ worker1_public_ip }}:80;
+}

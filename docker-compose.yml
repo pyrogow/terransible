@@ -1,0 +1,27 @@
+version: "3.4"
+services:
+  #tutum/hello-world
+  tutum:
+    restart: always
+    image: tutum/hello-world
+    ports:
+      - "80:80"
+    networks:
+      - customnetwork
+    deploy:
+      mode: replicated
+      replicas: 5
+
+  #dockersamples/visualizer
+  viz:
+    image: dockersamples/visualizer
+    ports:
+      - "3000:8080"
+    stop_grace_period: 1m30s
+    volumes:
+      - "/var/lib/docker.sock:/var/lib/docker.sock"
+    networks:
+      - customnetwork
+
+networks:
+  customnetwork:

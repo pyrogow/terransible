@@ -1,0 +1,17 @@
+---
+- name: Docker Swarm Init manager
+  hosts: tag_Name_manager
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: ec2-user
+  roles:
+    - swarm
+# - name: Docker Swarm Join manager
+#   hosts: tag_Name_worker1
+#   become: true
+#   become_method: sudo
+#   become_user: root
+#   remote_user: ec2-user
+#   roles:
+#     - swarm_join
